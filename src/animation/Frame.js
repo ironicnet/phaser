@@ -1,217 +1,230 @@
 /**
 * @author       Richard Davey <rich@photonstorm.com>
-* @copyright    2013 Photon Storm Ltd.
-* @license      https://github.com/photonstorm/phaser/blob/master/license.txt  MIT License
-* @module       Phaser.Animation
+* @copyright    2016 Photon Storm Ltd.
+* @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
 */
 
 /**
 * A Frame is a single frame of an animation and is part of a FrameData collection.
 *
-* @class Frame
+* @class Phaser.Frame
 * @constructor
-* @param {Number} index The index of this Frame within the FrameData set it is being added to.
-* @param {Number} x X position of the frame within the texture image.
-* @param {Number} y Y position of the frame within the texture image.
-* @param {Number} width Width of the frame within the texture image.
-* @param {Number} height Height of the frame within the texture image.
-* @param {String} name The name of the frame. In Texture Atlas data this is usually set to the filename.
-* @param {String} uuid Internal UUID key.
+* @param {number} index - The index of this Frame within the FrameData set it is being added to.
+* @param {number} x - X position of the frame within the texture image.
+* @param {number} y - Y position of the frame within the texture image.
+* @param {number} width - Width of the frame within the texture image.
+* @param {number} height - Height of the frame within the texture image.
+* @param {string} name - The name of the frame. In Texture Atlas data this is usually set to the filename.
 */
-Phaser.Animation.Frame = function (index, x, y, width, height, name, uuid) {
+Phaser.Frame = function (index, x, y, width, height, name) {
 
-	/**
-	* The index of this Frame within the FrameData set it is being added to.
-    * @property index
-    * @public
-	* @type {Number}
-	*/
-	this.index = index;
+    /**
+    * @property {number} index - The index of this Frame within the FrameData set it is being added to.
+    */
+    this.index = index;
 
-	/**
-	* X position within the image to cut from.
-    * @property x
-    * @public
-	* @type {Number}
-	*/
-	this.x = x;
+    /**
+    * @property {number} x - X position within the image to cut from.
+    */
+    this.x = x;
 
-	/**
-	* Y position within the image to cut from.
-    * @property y
-    * @public
-	* @type {Number}
-	*/
-	this.y = y;
+    /**
+    * @property {number} y - Y position within the image to cut from.
+    */
+    this.y = y;
 
-	/**
-	* Width of the frame.
-    * @property width
-    * @public
-	* @type {Number}
-	*/
-	this.width = width;
+    /**
+    * @property {number} width - Width of the frame.
+    */
+    this.width = width;
 
-	/**
-	* Height of the frame.
-    * @property height
-    * @public
-	* @type {Number}
-	*/
-	this.height = height;
+    /**
+    * @property {number} height - Height of the frame.
+    */
+    this.height = height;
 
-	/**
-	* Useful for Texture Atlas files. (is set to the filename value)
-    * @property name
-    * @public
-    * @type {String}
-	*/
-	this.name = name;
+    /**
+    * @property {string} name - Useful for Texture Atlas files (is set to the filename value).
+    */
+    this.name = name;
 
-	/**
-	* A link to the PIXI.TextureCache entry
-    * @property uuid
-    * @public
-    * @type {String}
-	*/
-	this.uuid = uuid;
-
-	/**
-	* center X position within the image to cut from.
-    * @property centerX
-    * @public
-	* @type {Number}
-	*/
+    /**
+    * @property {number} centerX - Center X position within the image to cut from.
+    */
     this.centerX = Math.floor(width / 2);
 
-	/**
-	* center Y position within the image to cut from.
-    * @property centerY
-    * @public
-	* @type {Number}
-	*/
+    /**
+    * @property {number} centerY - Center Y position within the image to cut from.
+    */
     this.centerY = Math.floor(height / 2);
 
-	/**
-	* The distance from the top left to the bottom-right of this Frame.
-    * @property distance
-    * @public
-	* @type {Number}
-	*/
-	this.distance = Phaser.Math.distance(0, 0, width, height);
+    /**
+    * @property {number} distance - The distance from the top left to the bottom-right of this Frame.
+    */
+    this.distance = Phaser.Math.distance(0, 0, width, height);
 
-	/**
-	* Rotated? (not yet implemented)
-    * @property rotated
-    * @public
-    * @type {Boolean}
-    * @default false
-	*/
-	this.rotated = false;
+    /**
+    * @property {boolean} rotated - Rotated? (not yet implemented)
+    * @default
+    */
+    this.rotated = false;
 
-	/**
-	* Either cw or ccw, rotation is always 90 degrees.
-    * @property rotationDirection
-    * @public
-    * @type {String}
-    * @default "cw"
-	*/
-	this.rotationDirection = 'cw';
+    /**
+    * @property {string} rotationDirection - Either 'cw' or 'ccw', rotation is always 90 degrees.
+    * @default 'cw'
+    */
+    this.rotationDirection = 'cw';
 
-	/**
-	* Was it trimmed when packed?
-    * @property trimmed
-    * @public
-	* @type {Boolean}
-	*/
-	this.trimmed = false;
+    /**
+    * @property {boolean} trimmed - Was it trimmed when packed?
+    * @default
+    */
+    this.trimmed = false;
 
-	/**
-	* Width of the original sprite.
-    * @property sourceSizeW
-    * @public
-	* @type {Number}
-	*/
+    /**
+    * @property {number} sourceSizeW - Width of the original sprite before it was trimmed.
+    */
     this.sourceSizeW = width;
 
-	/**
-	* Height of the original sprite.
-    * @property sourceSizeH
-    * @public
-	* @type {Number}
-	*/
+    /**
+    * @property {number} sourceSizeH - Height of the original sprite before it was trimmed.
+    */
     this.sourceSizeH = height;
 
-	/**
-	* X position of the trimmed sprite inside original sprite.
-    * @property spriteSourceSizeX
-    * @public
-	* @type {Number}
-    * @default 0
-	*/
-	this.spriteSourceSizeX = 0;
+    /**
+    * @property {number} spriteSourceSizeX - X position of the trimmed sprite inside original sprite.
+    * @default
+    */
+    this.spriteSourceSizeX = 0;
 
-	/**
-	* Y position of the trimmed sprite inside original sprite.
-    * @property spriteSourceSizeY
-    * @public
-	* @type {Number}
-    * @default 0
-	*/
-	this.spriteSourceSizeY = 0;
+    /**
+    * @property {number} spriteSourceSizeY - Y position of the trimmed sprite inside original sprite.
+    * @default
+    */
+    this.spriteSourceSizeY = 0;
 
-	/**
-	* Width of the trimmed sprite.
-    * @property spriteSourceSizeW
-    * @public
-	* @type {Number}
-    * @default 0
-	*/
-	this.spriteSourceSizeW = 0;
+    /**
+    * @property {number} spriteSourceSizeW - Width of the trimmed sprite.
+    * @default
+    */
+    this.spriteSourceSizeW = 0;
 
-	/**
-	* Height of the trimmed sprite.
-    * @property spriteSourceSizeH
-    * @public
-	* @type {Number}
-    * @default 0
-	*/
-	this.spriteSourceSizeH = 0;
+    /**
+    * @property {number} spriteSourceSizeH - Height of the trimmed sprite.
+    * @default
+    */
+    this.spriteSourceSizeH = 0;
+
+    /**
+    * @property {number} right - The right of the Frame (x + width).
+    */
+    this.right = this.x + this.width;
+
+    /**
+    * @property {number} bottom - The bottom of the frame (y + height).
+    */
+    this.bottom = this.y + this.height;
 
 };
 
-Phaser.Animation.Frame.prototype = {
+Phaser.Frame.prototype = {
 
-	/**
-	* If the frame was trimmed when added to the Texture Atlas this records the trim and source data.
-	*
-	* @method setTrim
-	* @param {Boolean} trimmed If this frame was trimmed or not.
-	* @param {Number} actualWidth The width of the frame before being trimmed.
-	* @param {Number} actualHeight The height of the frame before being trimmed.
-	* @param {Number} destX The destination X position of the trimmed frame for display.
-	* @param {Number} destY The destination Y position of the trimmed frame for display.
-	* @param {Number} destWidth The destination width of the trimmed frame for display.
-	* @param {Number} destHeight The destination height of the trimmed frame for display.
-	*/
+    /**
+    * Adjusts of all the Frame properties based on the given width and height values.
+    *
+    * @method Phaser.Frame#resize
+    * @param {integer} width - The new width of the Frame.
+    * @param {integer} height - The new height of the Frame.
+    */
+    resize: function (width, height) {
+
+        this.width = width;
+        this.height = height;
+        this.centerX = Math.floor(width / 2);
+        this.centerY = Math.floor(height / 2);
+        this.distance = Phaser.Math.distance(0, 0, width, height);
+        this.sourceSizeW = width;
+        this.sourceSizeH = height;
+        this.right = this.x + width;
+        this.bottom = this.y + height;
+
+    },
+
+    /**
+    * If the frame was trimmed when added to the Texture Atlas this records the trim and source data.
+    *
+    * @method Phaser.Frame#setTrim
+    * @param {boolean} trimmed - If this frame was trimmed or not.
+    * @param {number} actualWidth - The width of the frame before being trimmed.
+    * @param {number} actualHeight - The height of the frame before being trimmed.
+    * @param {number} destX - The destination X position of the trimmed frame for display.
+    * @param {number} destY - The destination Y position of the trimmed frame for display.
+    * @param {number} destWidth - The destination width of the trimmed frame for display.
+    * @param {number} destHeight - The destination height of the trimmed frame for display.
+    */
     setTrim: function (trimmed, actualWidth, actualHeight, destX, destY, destWidth, destHeight) {
 
         this.trimmed = trimmed;
 
         if (trimmed)
         {
-            this.width = actualWidth;
-            this.height = actualHeight;
             this.sourceSizeW = actualWidth;
             this.sourceSizeH = actualHeight;
-		    this.centerX = Math.floor(actualWidth / 2);
-		    this.centerY = Math.floor(actualHeight / 2);
+            this.centerX = Math.floor(actualWidth / 2);
+            this.centerY = Math.floor(actualHeight / 2);
             this.spriteSourceSizeX = destX;
             this.spriteSourceSizeY = destY;
             this.spriteSourceSizeW = destWidth;
             this.spriteSourceSizeH = destHeight;
         }
 
+    },
+
+    /**
+     * Clones this Frame into a new Phaser.Frame object and returns it.
+     * Note that all properties are cloned, including the name, index and UUID.
+     *
+     * @method Phaser.Frame#clone
+     * @return {Phaser.Frame} An exact copy of this Frame object.
+     */
+    clone: function () {
+
+        var output = new Phaser.Frame(this.index, this.x, this.y, this.width, this.height, this.name);
+
+        for (var prop in this)
+        {
+            if (this.hasOwnProperty(prop))
+            {
+                output[prop] = this[prop];
+            }
+        }
+
+        return output;
+
+    },
+
+    /**
+    * Returns a Rectangle set to the dimensions of this Frame.
+    *
+    * @method Phaser.Frame#getRect
+    * @param {Phaser.Rectangle} [out] - A rectangle to copy the frame dimensions to.
+    * @return {Phaser.Rectangle} A rectangle.
+    */
+    getRect: function (out) {
+
+        if (out === undefined)
+        {
+            out = new Phaser.Rectangle(this.x, this.y, this.width, this.height);
+        }
+        else
+        {
+            out.setTo(this.x, this.y, this.width, this.height);
+        }
+
+        return out;
+
     }
 
 };
+
+Phaser.Frame.prototype.constructor = Phaser.Frame;
